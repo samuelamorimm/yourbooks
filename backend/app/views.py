@@ -6,8 +6,8 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from rest_framework import status
-from .serializers import RegisterUserSerializer, ClientSerializer, AuthorSerializer
-from .models import Client, Author
+from .serializers import RegisterUserSerializer, ClientSerializer, AuthorSerializer, BookSerializer
+from .models import Client, Author, Book
 
 # Create your views here.
 class AuthorViewSet(ModelViewSet):
@@ -19,6 +19,31 @@ class CLientViewSet(ModelViewSet):
   queryset = Client.objects.all()
   serializer_class = ClientSerializer
   permission_classes = [IsAuthenticated]
+
+class BookViewSet(ModelViewSet):
+  queryset = Book.objects.all()
+  serializer_class = BookSerializer
+  permission_classes = [IsAuthenticated]
+
+class SearchBooksViewSet(ModelViewSet):
+  queryset = Book.objects.all()
+  serializer_class = BookSerializer
+  permission_classes = [IsAuthenticated]
+
+  def get_queryset(self):
+      nome = self.request.query_params.get('nome')
+      author = self.request.query_params.get('author')
+      if nome:
+        nome = nome.strip().lower()
+        queryset = Book.objects.filter(title__icontains=nome)
+        if queryset.exists():
+          return queryset
+        
+      if author:
+        author = author.strip().lower()
+        queryset = Book.objects.filter(author__name_author__icontains=author)
+        return queryset
+  
 
 class CustomAuthToken(ObtainAuthToken):
   def post(self, request, *args, **kwargs):

@@ -12,6 +12,7 @@ class ClientSerializer(serializers.ModelSerializer):
     fields = '__all__'
 
 class BookSerializer(serializers.ModelSerializer):
+  author_name = serializers.CharField(source='author.name_author', write_only=False)
   class Meta:
     model = Book
     fields = '__all__'
