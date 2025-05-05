@@ -3,7 +3,7 @@ from .models import CustomUser, Book, Author, Client
 
 class AuthorSerializer(serializers.ModelSerializer):
   class Meta:
-    model = Book
+    model = Author
     fields = '__all__'
 
 class ClientSerializer(serializers.ModelSerializer):
