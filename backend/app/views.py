@@ -14,6 +14,7 @@ class AuthorViewSet(ModelViewSet):
   queryset = Author.objects.all()
   serializer_class = AuthorSerializer
   permission_classes = [IsAuthenticated]
+  
 
 class CLientViewSet(ModelViewSet):
   queryset = Client.objects.all()
